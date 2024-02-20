@@ -7,7 +7,7 @@ interface Core
 
         # Style
         Style,
-        withStyle,
+        withStyles,
 
         # Color
         Color,
@@ -62,7 +62,6 @@ Style : [
     Faint [On, Off],
     Italic [On, Off],
     Underline [On, Off],
-    Overline [On, Off], # TODO: Investigate which terminals support this
     Strikethrough [On, Off],
     Blink [Slow, Rapid, Off], # TODO: Investigate which terminals support rapid blink
     Invert [On, Off],
@@ -80,13 +79,13 @@ Color : [
     B24 (U8, U8, U8),
 ]
 
-toStr = \x -> "\u(001b)$(fromEscape x)"
+toStr = \x -> "\u(001b)" |> Str.concat (fromEscape x)
 
 fromEscape : Escape -> Str
 fromEscape = \escape ->
     when escape is
         Reset -> "c"
-        Control control -> "[$(fromControl control)"
+        Control control -> "[" |> Str.concat (fromControl control)
 
 fromControl : Control -> Str
 fromControl = \control ->
@@ -129,7 +128,7 @@ fromControl = \control ->
                 Up -> "$(Num.toStr lines)S"
                 Down -> "$(Num.toStr lines)T"
 
-        Style style -> "$(style |> fromStyle |> List.map Num.toStr |> Str.joinWith ";")m"
+        Style style -> style |> fromStyle |> List.map Num.toStr |> Str.joinWith ";" |> Str.concat "m"
 
 fromStyle : Style -> List U8
 fromStyle = \style ->
@@ -154,11 +153,6 @@ fromStyle = \style ->
             when u is
                 On -> [4]
                 Off -> [24]
-
-        Overline u ->
-            when u is
-                On -> [53]
-                Off -> [55]
 
         Strikethrough s ->
             when s is
@@ -237,8 +231,8 @@ fromBgColor = \bg ->
         B24 (r, g, b) -> [48, 2, r, g, b]
 
 ## Adds style to a Str
-withStyle : Str, List Style -> Str
-withStyle = \str, styles ->
+withStyles : Str, List Style -> Str
+withStyles = \str, styles ->
     styles
     |> List.map Style
     |> List.map Control
