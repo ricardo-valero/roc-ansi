@@ -52,5 +52,5 @@ to_code = |a|
                 On -> [7]
                 Off -> [27]
 
-        Foreground(color) -> color |> Color.to_code(30)
-        Background(color) -> color |> Color.to_code(40)
+        Foreground color -> Color.up_scale (ToRgb color) |> Color.to_code 30
+        Background color -> Color.up_scale (ToRgb color) |> Color.to_code 40

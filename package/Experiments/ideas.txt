@@ -1,0 +1,14 @@
+## [ANSI Escape Codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
+
+CommandSequence : [
+    SelectGraphicRendition,
+    CursorHorizontalAbsolute,
+]
+
+ansi : CommandSequence -> Str
+ansi = \sequence ->
+    when sequence is
+        CursorHorizontalAbsolute -> "G"
+        SelectGraphicRendition -> "m"
+
+# TODO: Termenv identify ColorProfile

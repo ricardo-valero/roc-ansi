@@ -94,7 +94,7 @@ test_header = test_rows |> List.get 0 |> Result.with_default []
 ## It only truncates for single line words (horizontal size only). TODO: Add multiline support (breakdown words, add hyphen)?
 ## It only pads to the right. TODO: Add word alignment support?
 trunc_or_pad : Str, Str -> (Str, U64 -> Str)
-trunc_or_pad = |trunc_char, fill_char|
+trunc_or_pad = |truncChar, fillChar|
     |str, size|
         if size == 0 then
             ""
@@ -104,11 +104,11 @@ trunc_or_pad = |trunc_char, fill_char|
             if len > size then
                 ## The string is larger the specified size, truncate it and append the truncation character.
                 truncated = data |> List.take_first (size - 1) |> Str.from_utf8 |> Result.with_default ""
-                truncated |> Str.concat trunc_char
+                truncated |> Str.concat truncChar
             else if len < size then
                 ## The string is shorter than the specified size, pad it with the padding character.
-                right_pad = size - len
-                str |> Str.concat (Str.repeat fill_char right_pad)
+                rightPad = size - len
+                str |> Str.concat (Str.repeat fillChar rightPad)
             else
                 ## If the string is exactly the specified size, return it as is.
                 str

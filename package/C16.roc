@@ -3,7 +3,7 @@ module [C16, to_c256, name_to_code, Name]
 import C256 exposing [C256]
 
 ## [Ansi 16 colors](https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit)
-## This colors can be customized, leading to variations across different terminals.
+## These colors can be customized, leading to variations across different terminals.
 ## Therefore, if your use case requires a consistent color palette, it's recommended to avoid using them.
 C16 : [Standard Name, Bright Name]
 Name : [Black, Red, Green, Yellow, Blue, Magenta, Cyan, White]

@@ -10,20 +10,18 @@
   }: let
     systems = nixpkgs.lib.systems.flakeExposed;
   in {
-    formatter = nixpkgs.lib.genAttrs systems (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        pkgs.alejandra
-    );
     devShells = nixpkgs.lib.genAttrs systems (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      rocPkgs = roc.packages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      roc-pkgs = roc.packages.${system};
     in {
       default = pkgs.mkShell {
         buildInputs = builtins.attrValues {
-          inherit (pkgs) nixd nil alejandra;
-          inherit (rocPkgs) full;
+          inherit (pkgs) nixd alejandra;
+          inherit (pkgs) claude-code;
+          inherit (roc-pkgs) full;
         };
       };
     });

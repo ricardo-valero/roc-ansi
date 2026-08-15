@@ -1,0 +1,12 @@
+{
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nil",
+  "nix.serverSettings": {
+    "nil": {
+      "formatting": {
+        "command": ["alejandra"]
+      }
+    }
+  },
+  "roc.language-server.exe": "roc_language_server"
+}
